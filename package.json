@@ -32,6 +32,8 @@
     "bower": "^1.7.9",
     "express": "^4.14.0",
     "node-sass-middleware": "^0.9.8",
+    "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2",
     "sequelize": "^3.24.3"
   },
   "devDependencies": {
