@@ -1,0 +1,24 @@
+{
+  "name": "speedtest",
+  "version": "1.0.0",
+  "description": "NSS internal app for internet connection speed test visualization.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewEvolution/speedtest.git"
+  },
+  "keywords": [
+    "speedtest",
+    "visualization",
+    "graphing"
+  ],
+  "author": "Ryan Tanay <rtanay@gmail.com> (http://portfolio.ryantanay.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NewEvolution/speedtest/issues"
+  },
+  "homepage": "https://github.com/NewEvolution/speedtest#readme"
+}
