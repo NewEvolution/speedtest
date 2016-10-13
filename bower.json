@@ -1,0 +1,22 @@
+{
+  "name": "speedtest",
+  "description": "NSS internal app for internet connection speed test visualization.",
+  "main": "server.js",
+  "authors": [
+    "Ryan Tanay <rtanay@gmail.com> (http://portfolio.ryantanay.com/)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "speedtest",
+    "visualization",
+    "graphing"
+  ],
+  "homepage": "https://github.com/NewEvolution/speedtest",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

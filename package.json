@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/NewEvolution/speedtest/issues"
   },
-  "homepage": "https://github.com/NewEvolution/speedtest#readme"
+  "homepage": "https://github.com/NewEvolution/speedtest#readme",
+  "dependencies": {
+    "bower": "^1.7.9"
+  }
 }
