@@ -14,6 +14,10 @@ app.use(require('node-sass-middleware')({
   sourceMap: true
 }));
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 const routes = require('./routes/')
 app.use(routes);
 
