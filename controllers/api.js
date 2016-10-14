@@ -8,7 +8,7 @@ module.exports.index = (req, res) => {
 
 module.exports.new = (req, res) => {
   const obj = new Speedtest({
-    date: req.body.date,
+    scantime: Date.parse(req.body.date),
     ping: req.body.ping,
     download: req.body.download,
     upload: req.body.upload
