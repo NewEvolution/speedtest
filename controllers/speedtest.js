@@ -8,7 +8,7 @@ const speedtest = () => {
   return execSync('speedtest-cli --simple').toString();
 }
 
-module.exports.test = (req, res) => {
+module.exports.new = (req, res) => {
   q.fcall(speedtest).then(results => {
     // via http://txt2re.com/index-javascript.php3?s=Download:%2082.15%20Mbit/s&3
     const regex = new RegExp('.*?([+-]?\\d*\\.\\d+)(?![-+0-9\\.])');
@@ -29,5 +29,20 @@ module.exports.test = (req, res) => {
     });
   });
 
-  res.send('Testing...');
+  const created = 201;
+  res.sendStatus(created);
+};
+
+module.exports.add = (req, res) => {
+  const obj = new Speedtest({
+    scantime: Date.parse(req.body.date),
+    ping: req.body.ping,
+    download: req.body.download,
+    upload: req.body.upload
+  });
+
+  obj.save((err, newObj) => {
+    if (err) throw err;
+    res.send(newObj);
+  });
 };
