@@ -3,19 +3,30 @@
 const Speedtest = require('../models/speedtest');
 
 module.exports.index = (req, res) => {
-  res.send('I exist');
+  const now = new Date();
+  const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
+  Speedtest
+    .find({ scantime: {$gte: today} })
+    .exec((err, results) => {
+      if (err) throw err;
+      res.send(results);
+    });
 };
 
-module.exports.new = (req, res) => {
-  const obj = new Speedtest({
-    scantime: Date.parse(req.body.date),
-    ping: req.body.ping,
-    download: req.body.download,
-    upload: req.body.upload
-  });
+module.exports.year = (req, res) => {
+  const year = req.params.year;
+  res.send(year);
+};
 
-  obj.save((err, newObj) => {
-    if (err) throw err;
-    res.send(newObj);
-  });
+module.exports.month = (req, res) => {
+  const year = req.params.year;
+  const month = req.params.month;
+  res.send(`${year}-${month}`);
+};
+
+module.exports.day = (req, res) => {
+  const year = req.params.year;
+  const month = req.params.month;
+  const day = req.params.day;
+  res.send(`${year}-${month}-${day}`);
 };
