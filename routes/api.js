@@ -4,9 +4,9 @@ const express = require('express');
 const router = express.Router();
 
 const api = require('../controllers/api');
-router.get('/:year/:month/:day', api.day)
-      .get('/:year/:month', api.month)
-      .get('/:year', api.year)
-      .get('/', api.index);
+router.get('/day/:date', api.day)
+      .get('/month/:date', api.month)
+      .get('/year/:date', api.year)
+      .get('/', api.today);
 
 module.exports = router;
