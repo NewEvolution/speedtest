@@ -13,9 +13,10 @@ const getResults = (startDate, endDate) => {
 };
 
 const getAverage = numArray => {
-  let sum;
+  let sum = 0;
   numArray.forEach(value => { sum += value });
-  return sum / numArray.length;
+  const decimalPlaces = 3;
+  return parseFloat((sum / numArray.length).toFixed(decimalPlaces));
 };
 
 module.exports.today = (req, res) => {
