@@ -38,41 +38,42 @@ module.exports.month = (req, res) => {
   const endDate = moment(startDate).add(1, 'month');
   getResults(startDate, endDate)
     .then(results => {
-      let currentDay;
+      let currentDay = null;
       let ping = [];
       let download = [];
       let upload = [];
-      const dayTest = {};
 
       const summarize = () => {
-        dayTest.ping = getAverage(ping);
-        dayTest.download = getAverage(download);
-        dayTest.upload = getAverage(upload);
+        const dayTest = {
+          ping: getAverage(ping),
+          download: getAverage(download),
+          upload: getAverage(upload),
+          scantime: moment()
+            .year(currentDay.year())
+            .month(currentDay.month())
+            .date(currentDay.date())
+        };
         ping = [];
         download = [];
         upload = [];
-        dayTest.scantime = moment()
-          .year(currentDay.year())
-          .month(currentDay.month())
-          .date(currentDay.date())
+        return dayTest;
       };
 
-      const perDayResults = results.map((test, index) => {
+      const perDayResults = [];
+      results.forEach((test, index) => {
         currentDay = currentDay ? currentDay : moment(test.scantime);
 
         if (!currentDay.isSame(test.scantime, 'day')) {
-          summarize();
+          perDayResults[perDayResults.length] = summarize();
           currentDay = moment(test.scantime);
-          return dayTest;
         }
 
         ping[ping.length] = test.ping;
         download[download.length] = test.download;
-        upload[upload.length] = test.length;
+        upload[upload.length] = test.upload;
 
         if (index === results.length - 1) {
-          summarize();
-          return dayTest;
+          perDayResults[perDayResults.length] = summarize();
         }
       });
       res.send(perDayResults);
