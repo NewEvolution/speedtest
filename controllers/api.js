@@ -3,20 +3,38 @@
 const Speedtest = require('../models/speedtest');
 const moment = require('moment');
 
-const getResults = (startDate, endDate) => {
+const getResults = (startDate, endDate, dateGroup) => {
   return Speedtest
-    .find({scantime: {$gte: startDate, $lt: endDate}})
+    .aggregate([
+      {
+        $match: {
+          scantime: {
+            $gte: startDate,
+            $lt: endDate
+          }
+        }
+      },
+      {
+        $project: {
+          scantime: {$substr: ['$scantime', 0, dateGroup]},
+          ping: '$ping',
+          download: '$download',
+          upload: '$upload'
+        }
+      },
+      {
+        $group: {
+          _id : '$scantime',
+          ping : {$avg : '$ping'},
+          download: {$avg: '$download'},
+          upload: {$avg: '$upload'}
+        }
+      }
+    ])
     .exec((err, results) => {
       if (err) throw err;
       return results;
     });
-};
-
-const getAverage = numArray => {
-  let sum = 0;
-  numArray.forEach(value => { sum += value });
-  const decimalPlaces = 3;
-  return parseFloat((sum / numArray.length).toFixed(decimalPlaces));
 };
 
 module.exports.today = (req, res) => {
@@ -36,47 +54,10 @@ module.exports.year = (req, res) => {
 module.exports.month = (req, res) => {
   const startDate = moment(req.params.date, 'YYYYMM');
   const endDate = moment(startDate).add(1, 'month');
-  getResults(startDate, endDate)
+  const significantDateDigits = 10;
+  getResults(startDate, endDate, significantDateDigits)
     .then(results => {
-      let currentDay = null;
-      let ping = [];
-      let download = [];
-      let upload = [];
-
-      const summarize = () => {
-        const dayTest = {
-          ping: getAverage(ping),
-          download: getAverage(download),
-          upload: getAverage(upload),
-          scantime: moment()
-            .year(currentDay.year())
-            .month(currentDay.month())
-            .date(currentDay.date())
-        };
-        ping = [];
-        download = [];
-        upload = [];
-        return dayTest;
-      };
-
-      const perDayResults = [];
-      results.forEach((test, index) => {
-        currentDay = currentDay ? currentDay : moment(test.scantime);
-
-        if (!currentDay.isSame(test.scantime, 'day')) {
-          perDayResults[perDayResults.length] = summarize();
-          currentDay = moment(test.scantime);
-        }
-
-        ping[ping.length] = test.ping;
-        download[download.length] = test.download;
-        upload[upload.length] = test.upload;
-
-        if (index === results.length - 1) {
-          perDayResults[perDayResults.length] = summarize();
-        }
-      });
-      res.send(perDayResults);
+      res.send(results);
     })
 };
 
