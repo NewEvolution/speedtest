@@ -2,7 +2,8 @@
 
 const Speedtest = require('../models/speedtest');
 const execSync = require('child_process').execSync;
-const q = require('q')
+const moment = require('moment');
+const q = require('q');
 
 const speedtest = () => {
   return execSync('speedtest-cli --simple').toString();
@@ -35,7 +36,7 @@ module.exports.new = (req, res) => {
 
 module.exports.add = (req, res) => {
   const obj = new Speedtest({
-    scantime: Date.parse(req.body.date),
+    scantime: moment(req.body.date),
     ping: req.body.ping,
     download: req.body.download,
     upload: req.body.upload
