@@ -38,7 +38,7 @@ const getResults = (startDate, endDate, significantDateLength) => {
 };
 
 module.exports.today = (req, res) => {
-  const startDate = moment();
+  const startDate = moment(moment().format('YYYY-MM-DD'));
   const endDate = moment(startDate).add(1, 'day');
   const significantDateLength = 16;
   getResults(startDate, endDate, significantDateLength)
