@@ -10,13 +10,12 @@ if (args.length === requiredArgs) {
   const filepath = args[2];
   fs.readFile(filepath, 'utf8', (err, data) => {
     if (err) throw err;
-    const tests = data
-      .split('#')
+    data.split('#')
       .map(test => test
         .split('\n')
         .filter(test => test !== '' && test !== ' '))
       .filter(test => test.length !== 0)
-    console.log(tests); // eslint-disable-line no-console
+      .forEach(test => console.log(test)); // eslint-disable-line no-console
   });
 } else {
   console.log('usage: import.js </path/to/speedtest.log>') // eslint-disable-line no-console
