@@ -42,7 +42,7 @@ module.exports.new = (req, res) => {
 
 module.exports.add = (req, res) => {
   const obj = new Speedtest({
-    scantime: moment(req.body.date),
+    scantime: moment(req.body.scantime),
     ping: req.body.ping,
     download: req.body.download,
     upload: req.body.upload
