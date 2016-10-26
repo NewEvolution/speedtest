@@ -46,11 +46,11 @@ if (args.length === requiredArgs) {
       });
 
     const url = args[3];
-    const oneHundrethSecond = 10;
+    const fiveMilliseconds = 5;
 
     speedtestObjects.forEach((test, index) => {
       console.log('Number', index);
-      testPoster(url, test, index * oneHundrethSecond);
+      testPoster(url, test, index * fiveMilliseconds);
     });
 
   });
