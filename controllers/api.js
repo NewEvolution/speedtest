@@ -19,7 +19,7 @@ const getAverage = numArray => {
   return parseFloat((sum / numArray.length).toFixed(decimalPlaces));
 };
 
-const dayResults = results => {
+const averagedResults = (results, timePeriod) => {
   let currentDay = null;
   let ping = [];
   let download = [];
@@ -45,12 +45,12 @@ const dayResults = results => {
     return dayTest;
   };
 
-  const perDayResults = [];
+  const perTimePeriodResults = [];
   results.forEach((test, index) => {
     currentDay = currentDay ? currentDay : moment(test.scantime);
 
-    if (!currentDay.isSame(test.scantime, 'day')) {
-      perDayResults[perDayResults.length] = summarize();
+    if (!currentDay.isSame(test.scantime, timePeriod)) {
+      perTimePeriodResults[perTimePeriodResults.length] = summarize();
       currentDay = moment(test.scantime);
     }
 
@@ -59,44 +59,65 @@ const dayResults = results => {
     upload[upload.length] = test.upload;
 
     if (index === results.length - 1) {
-      perDayResults[perDayResults.length] = summarize();
+      perTimePeriodResults[perTimePeriodResults.length] = summarize();
     }
   });
 
-  return perDayResults;
+  return perTimePeriodResults;
 };
 
 module.exports.today = (req, res) => {
   const startDate = moment(moment().format('YYYY-MM-DD'));
   const endDate = moment(startDate).add(1, 'day');
   getResults(startDate, endDate)
-    .then(results => res.send(results))
+    .then(results => res.send(results));
 };
 
 module.exports.year = (req, res) => {
   const startDate = moment(req.params.date, 'YYYY');
   const endDate = moment(startDate).add(1, 'year');
   getResults(startDate, endDate)
-    .then(results => res.send(dayResults(results)))
+    .then(results => res.send(averagedResults(results, 'week')));
 };
 
 module.exports.month = (req, res) => {
   const startDate = moment(req.params.date, 'YYYYMM');
   const endDate = moment(startDate).add(1, 'month');
   getResults(startDate, endDate)
-    .then(results => res.send(dayResults(results)))
+    .then(results => res.send(averagedResults(results, 'day')));
 };
 
 module.exports.week = (req, res) => {
   const startDate = moment(req.params.date, 'YYYYMMDD');
   const endDate = moment(startDate).add(7, 'days'); // eslint-disable-line no-magic-numbers
   getResults(startDate, endDate)
-    .then(results => res.send(dayResults(results)))
+    .then(results => res.send(results));
 };
 
 module.exports.day = (req, res) => {
   const startDate = moment(req.params.date, 'YYYYMMDD');
   const endDate = moment(startDate).add(1, 'day');
   getResults(startDate, endDate)
-    .then(results => res.send(results))
+    .then(results => res.send(results));
+};
+
+module.exports.range = (req, res) => {
+  const startDate = moment(req.params.sdate, 'YYYYMMDD');
+  const endDate = moment(req.params.edate, 'YYYYMMDD');
+  const daysInRange = endDate.diff(startDate, 'days');
+  const maxDaysAsHours = 7;
+  const maxDaysAsDays = 168;
+  const maxDaysAsWeeks = 1168;
+  getResults(startDate, endDate)
+    .then(results => {
+      if (daysInRange <= maxDaysAsHours) {
+        res.send(results);
+      } else if (daysInRange <= maxDaysAsDays) {
+        res.send(averagedResults(results, 'day'));
+      } else if (daysInRange <= maxDaysAsWeeks) {
+        res.send(averagedResults(results, 'week'));
+      } else {
+        res.send(averagedResults(results, 'month'));
+      }
+    });
 };
