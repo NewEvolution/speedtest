@@ -6,15 +6,16 @@ const args = process.argv;
 const requiredArgs = 4;
 const CLIUsageError = 64;
 const fs = require('fs');
-const wait = require('wait.for');
 const request = require('request');
 
-const testPoster = (url, test) => {
-  request.post(url, {json: test}, (err, res, body) => {
-    if (err) throw err;
-    console.log('Created:', body);
-  });
-}
+const testPoster = (url, test, wait) => {
+  setTimeout(() => {
+    request.post(url, {json: test}, (err, res, body) => {
+      if (err) throw err;
+      console.log('Created:', body);
+    });
+  }, wait);
+};
 
 if (args.length === requiredArgs) {
   const filepath = args[2];
@@ -45,15 +46,13 @@ if (args.length === requiredArgs) {
       });
 
     const url = args[3];
+    const oneHundrethSecond = 10;
 
-    const testSender = () => {
-      speedtestObjects.forEach((test, index) => {
-        console.log('Number', index);
-        wait.for(testPoster, url, test);
-      });
-    };
+    speedtestObjects.forEach((test, index) => {
+      console.log('Number', index);
+      testPoster(url, test, index * oneHundrethSecond);
+    });
 
-    wait.launchFiber(testSender);
   });
 } else {
   console.log('usage: import.js </path/to/testObj.log> <http://url.to.post.to>');
