@@ -5,7 +5,6 @@ const args = process.argv;
 const requiredArgs = 4;
 const CLIUsageError = 64;
 const fs = require('fs');
-const wait = require('wait.for'); // eslint-disable-line no-unused-vars
 const request = require('request');
 
 if (args.length === requiredArgs) {
