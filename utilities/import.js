@@ -1,12 +1,20 @@
 #!/usr/bin/env node
+/* eslint no-console: 0 */
 'use strict';
 
 const args = process.argv;
 const requiredArgs = 4;
 const CLIUsageError = 64;
 const fs = require('fs');
-const wait = require('wait.for'); // eslint-disable-line no-unused-vars
+const wait = require('wait.for');
 const request = require('request');
+
+const testPoster = (url, test) => {
+  request.post(url, {json: test}, (err, res, body) => {
+    if (err) throw err;
+    console.log('Created:', body);
+  });
+}
 
 if (args.length === requiredArgs) {
   const filepath = args[2];
@@ -37,14 +45,17 @@ if (args.length === requiredArgs) {
       });
 
     const url = args[3];
-    speedtestObjects.forEach((test, index) => {
-      request.post(url, {json: test}, (err, res, body) => {
-        if (err) throw err;
-        console.log('Created:', index, body); // eslint-disable-line no-console
+
+    const testSender = () => {
+      speedtestObjects.forEach((test, index) => {
+        console.log('Number', index);
+        wait.for(testPoster, url, test);
       });
-    })
+    };
+
+    wait.launchFiber(testSender);
   });
 } else {
-  console.log('usage: import.js </path/to/testObj.log> <http://url.to.post.to>') // eslint-disable-line no-console
+  console.log('usage: import.js </path/to/testObj.log> <http://url.to.post.to>');
   process.exit(CLIUsageError);
 }
