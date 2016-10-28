@@ -22,11 +22,11 @@ app.use(routes);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const localMongo = 27017;
+const localMongoPort = 27017;
 const MONGODB_USER = process.env.MONGODB_USER || '';
 const MONGODB_PASS = process.env.MONGODB_PASS || '';
 const MONGODB_HOST = process.env.MONGODB_HOST || 'localhost';
-const MONGODB_PORT = process.env.MONGODB_PORT || localMongo;
+const MONGODB_PORT = process.env.MONGODB_PORT || localMongoPort;
 
 const MONGODB_AUTH = MONGODB_USER ? `${MONGODB_USER}:${MONGODB_PASS}@` : '';
 
@@ -41,7 +41,7 @@ mongoose.connection.on('open', (err) => {
   if (err) throw err;
 
   app.listen(PORT, () => {
-    console.log(`Speedtest result server started. listening on port ${PORT}`); // eslint-disable-line no-console
+    console.log(`Speedtest result server started. Listening on port ${PORT}`); // eslint-disable-line no-console
   });
 });
 
