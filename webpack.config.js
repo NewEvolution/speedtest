@@ -18,7 +18,7 @@ module.exports = {
   },
   output: {
     filename: 'bundled.js',
-    path: `${__dirname}/dist`
+    path: `${__dirname}/public`
   },
   plugins: [HtmlPluginConfig]
 };
