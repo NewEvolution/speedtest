@@ -39,7 +39,8 @@
     "react": "^15.3.2",
     "react-d3-basic": "^1.6.11",
     "react-dom": "^15.3.2",
-    "request": "^2.76.0"
+    "request": "^2.76.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.18.0",
