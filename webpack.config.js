@@ -9,6 +9,7 @@ const HtmlPluginConfig = new HtmlPlugin({
 
 module.exports = {
   entry: [
+    'whatwg-fetch',
     './src/app.js'
   ],
   module: {
