@@ -51,20 +51,33 @@ const LineChart = require('react-d3-basic').LineChart;
     }
     render() {
       return(
-        <div>
-          <p>The {this.state.range} starts at {this.state.startDate.format()}</p>
-          <p>The {this.state.range} ends at {this.state.endDate.format()}</p>
-          <button onClick={() => this.previous()}>Previous</button>
-          <select onChange={(e) => this.timespan(e)}>
-            <option value="day">Day</option>
-            <option value="week">Week</option>
-            <option value="month">Month</option>
-            <option value="year">Year</option>
-          </select>
-          <button onClick={() => this.next()}>Next</button>
-        </div>
+        <Controls
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
+          range={this.state.range}
+          timespan={(e) => this.timespan(e)}
+          previous={() => this.previous()}
+          next={() => this.next()}
+        />
       )
     }
+  };
+
+  function Controls(props) {
+    return(
+      <div>
+        <h1>{props.range}</h1>
+        <p>{props.startDate.format('M/D/YYYY h:mm a')} - {props.endDate.format('M/D/YYYY h:mm a')}</p>
+        <button onClick={() => props.previous()}>Previous</button>
+        <select onChange={(e) => props.timespan(e)}>
+          <option value="day">Day</option>
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+        </select>
+        <button onClick={() => props.next()}>Next</button>
+      </div>
+    )
   };
 
   ReactDOM.render(
