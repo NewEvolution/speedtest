@@ -8,9 +8,7 @@ const LineChart = require('react-d3-basic').LineChart;
 
 (() => {
   const endMaker = (date, range) => {
-    return moment(date)
-      .add(1, range)
-      .subtract(1, 'millisecond')
+    return moment(date).add(1, range)
   };
 
   class Content extends React.Component{
@@ -67,7 +65,7 @@ const LineChart = require('react-d3-basic').LineChart;
     return(
       <div>
         <h1>{props.range}</h1>
-        <p>{props.startDate.format('M/D/YYYY h:mm a')} - {props.endDate.format('M/D/YYYY h:mm a')}</p>
+        <p>{props.startDate.format('M/D/YYYY')} - {props.endDate.format('M/D/YYYY')}</p>
         <button onClick={() => props.previous()}>Previous</button>
         <select onChange={(e) => props.timespan(e)}>
           <option value="day">Day</option>
