@@ -7,6 +7,12 @@ const moment = require('moment');
 const LineChart = require('react-d3-basic').LineChart;
 
 (() => {
+  const endMaker = (date, range) => {
+    return moment(date)
+      .add(1, range)
+      .subtract(1, 'millisecond')
+  };
+
   class Content extends React.Component{
     constructor() {
       super();
@@ -21,35 +27,26 @@ const LineChart = require('react-d3-basic').LineChart;
               .millisecond(0);
       this.state = {
         startDate: today,
-        endDate: moment(today)
-          .add(1, 'day')
-          .subtract(1, 'millisecond'),
+        endDate: endMaker(today, 'day'),
         range: 'day'
       };
-    }
-    endMaker(date) {
-      return moment(date)
-        .add(1, this.state.range)
-        .subtract(1, 'millisecond')
     }
     previous() {
       this.setState({
         startDate: this.state.startDate.subtract(1, this.state.range),
-        endDate: this.endMaker(this.state.startDate)
+        endDate: endMaker(this.state.startDate, this.state.range)
       });
     }
     next() {
       this.setState({
         startDate: this.state.startDate.add(1, this.state.range),
-        endDate: this.endMaker(this.state.startDate)
+        endDate: endMaker(this.state.startDate, this.state.range)
       });
     }
     timespan(e) {
       this.setState({
         range: e.target.value,
-        endDate: moment(this.state.startDate)
-          .add(1, e.target.value)
-          .subtract(1, 'milliseconds')
+        endDate: endMaker(this.state.startDate, e.target.value)
       });
     }
     render() {
