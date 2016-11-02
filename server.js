@@ -3,16 +3,6 @@
 const express = require('express');
 const app = express();
 
-const path = require('path');
-app.use(require('node-sass-middleware')({
-  src: path.join(__dirname, 'sass'),
-  dest: path.join(__dirname, 'public/styles'),
-  prefix: '/styles',
-  outputStye: 'compressed',
-  indentedSyntax: true,
-  sourceMap: true
-}));
-
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -20,6 +10,7 @@ app.use(bodyParser.json());
 const routes = require('./routes/')
 app.use(routes);
 
+const path = require('path');
 app.use(express.static(path.join(__dirname, 'public')));
 
 const localMongoPort = 27017;

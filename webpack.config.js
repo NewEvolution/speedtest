@@ -14,7 +14,16 @@ module.exports = {
   ],
   module: {
     loaders: [
-      {test: /\.js$/, include: `${__dirname}/src`, loader: 'babel-loader'}
+      {
+        test:   /\.scss$/,
+        loaders: ['style', 'raw', 'sass'],
+        include: `${__dirname}/scss`
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: `${__dirname}/src`
+      }
     ]
   },
   output: {
