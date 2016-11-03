@@ -6,7 +6,7 @@ const DateRangePicker = require('react-dates').DateRangePicker;
 const React = require('react');
 const ReactDOM = require('react-dom');
 const moment = require('moment');
-//const fetch = require('whatwg-fetch');
+const fetch = require('whatwg-fetch');
 const LineChart = require('react-d3-basic').LineChart;
 
 (() => {
@@ -27,38 +27,46 @@ const LineChart = require('react-d3-basic').LineChart;
         focusedInput: null
       };
     }
+    // Called to decrement the start and end dates by the current range
     previous() {
       this.setState({
         startDate: this.state.startDate.subtract(1, this.state.range),
         endDate: endMaker(this.state.startDate, this.state.range)
       });
     }
+    // Called to increment the start and end dates by the current range
     next() {
       this.setState({
         startDate: this.state.startDate.add(1, this.state.range),
         endDate: endMaker(this.state.startDate, this.state.range)
       });
     }
+    // Called to change the current range (day, week, month, year)
     timespan(e) {
       this.setState({
         range: e.target.value,
         endDate: endMaker(this.state.startDate, e.target.value)
       });
     }
+    // Called by date picker upon changing dates to set dates in state
     onDatesChange(datesObj) {
       this.setState({
         startDate: datesObj.startDate,
         endDate: datesObj.endDate
       })
     }
+    // Called by date picker when focus changes to/from inputs
     onFocusChange(focused) {
       this.setState({
         focusedInput: focused
       })
     }
+    // Disables dates in the callendar that fall in the future
+    // or before data collection started
     isOutsideRange(date) {
       return (date.isAfter(tomorrow) || date.isBefore(firstScan));
     }
+    // Sets the start month to the previous month
     initialVisibleMonth() {
       return moment().subtract(1, 'month');
     }
@@ -87,7 +95,7 @@ const LineChart = require('react-d3-basic').LineChart;
         <button
           disabled={props.startDate.isSameOrBefore(firstScan, 'day')}
           onClick={() => props.previous()}
-        >Previous</button>
+        >&laquo;</button>
         <select onChange={e => props.timespan(e)}>
           <option value="day">Day</option>
           <option value="week">Week</option>
@@ -97,7 +105,7 @@ const LineChart = require('react-d3-basic').LineChart;
         <button
           disabled={props.endDate.isSameOrAfter(tomorrow, 'day')}
           onClick={() => props.next()}
-        >Next</button>
+        >&raquo;</button>
         <div>
           <DateRangePicker
             startDate={props.startDate}
