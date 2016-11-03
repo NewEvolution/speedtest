@@ -20,7 +20,7 @@ const getAverage = numArray => {
 };
 
 const averagedResults = (results, timePeriod) => {
-  let currentDay = null;
+  let currentPeriod = null;
   let ping = [];
   let download = [];
   let upload = [];
@@ -30,14 +30,7 @@ const averagedResults = (results, timePeriod) => {
       ping: getAverage(ping),
       download: getAverage(download),
       upload: getAverage(upload),
-      scantime: moment()
-        .year(currentDay.year())
-        .month(currentDay.month())
-        .date(currentDay.date())
-        .hour(0)
-        .minute(0)
-        .second(0)
-        .millisecond(0)
+      scantime: moment(currentPeriod).startOf('day')
     };
     ping = [];
     download = [];
@@ -47,11 +40,11 @@ const averagedResults = (results, timePeriod) => {
 
   const perTimePeriodResults = [];
   results.forEach((test, index) => {
-    currentDay = currentDay ? currentDay : moment(test.scantime);
+    currentPeriod = currentPeriod ? currentPeriod : moment(test.scantime);
 
-    if (!currentDay.isSame(test.scantime, timePeriod)) {
+    if (!currentPeriod.isSame(test.scantime, timePeriod)) {
       perTimePeriodResults[perTimePeriodResults.length] = summarize();
-      currentDay = moment(test.scantime);
+      currentPeriod = moment(test.scantime);
     }
 
     ping[ping.length] = test.ping;

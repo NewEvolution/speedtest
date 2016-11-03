@@ -17,15 +17,7 @@ const LineChart = require('react-d3-basic').LineChart;
   class Content extends React.Component{
     constructor() {
       super();
-      const now = moment(),
-            today = moment()
-              .year(now.year())
-              .month(now.month())
-              .day(now.day())
-              .hour(0)
-              .minute(0)
-              .second(0)
-              .millisecond(0);
+      const today = moment().startOf('day');
       this.state = {
         startDate: today,
         endDate: endMaker(today, 'day'),
@@ -63,7 +55,7 @@ const LineChart = require('react-d3-basic').LineChart;
       })
     }
     isOutsideRange(date) {
-      const tomorrow = moment().add(1, 'day');
+      const tomorrow = moment().add(1, 'day').endOf('day');
       return (date.isAfter(tomorrow) || date.isBefore('2016-04-25'));
     }
     initialVisibleMonth() {
@@ -91,7 +83,6 @@ const LineChart = require('react-d3-basic').LineChart;
   function Controls(props) {
     return(
       <div>
-        <h1>{props.range}</h1>
         <button onClick={() => props.previous()}>Previous</button>
         <select onChange={e => props.timespan(e)}>
           <option value="day">Day</option>
