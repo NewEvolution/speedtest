@@ -11,8 +11,10 @@ const LineChart = require('react-d3-basic').LineChart;
 
 (() => {
   const endMaker = (date, range) => {
-    return moment(date).add(1, range)
-  };
+          return moment(date).add(1, range)
+        },
+        tomorrow = moment().add(1, 'day').endOf('day'),
+        firstScan = moment('2016-04-25').startOf('day');
 
   class Content extends React.Component{
     constructor() {
@@ -55,8 +57,7 @@ const LineChart = require('react-d3-basic').LineChart;
       })
     }
     isOutsideRange(date) {
-      const tomorrow = moment().add(1, 'day').endOf('day');
-      return (date.isAfter(tomorrow) || date.isBefore('2016-04-25'));
+      return (date.isAfter(tomorrow) || date.isBefore(firstScan));
     }
     initialVisibleMonth() {
       return moment().subtract(1, 'month');
@@ -83,14 +84,20 @@ const LineChart = require('react-d3-basic').LineChart;
   function Controls(props) {
     return(
       <div>
-        <button onClick={() => props.previous()}>Previous</button>
+        <button
+          disabled={props.startDate.isSameOrBefore(firstScan, 'day')}
+          onClick={() => props.previous()}
+        >Previous</button>
         <select onChange={e => props.timespan(e)}>
           <option value="day">Day</option>
           <option value="week">Week</option>
           <option value="month">Month</option>
           <option value="year">Year</option>
         </select>
-        <button onClick={() => props.next()}>Next</button>
+        <button
+          disabled={props.endDate.isSameOrAfter(tomorrow, 'day')}
+          onClick={() => props.next()}
+        >Next</button>
         <div>
           <DateRangePicker
             startDate={props.startDate}
