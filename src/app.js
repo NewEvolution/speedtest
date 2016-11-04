@@ -96,27 +96,31 @@ const LineChart = require('react-d3-basic').LineChart;
           disabled={props.startDate.isSameOrBefore(firstScan, 'day')}
           onClick={() => props.previous()}
         >&laquo;</button>
-        <select onChange={e => props.timespan(e)}>
-          <option value="day">Day</option>
-          <option value="week">Week</option>
-          <option value="month">Month</option>
-          <option value="year">Year</option>
-        </select>
+        <div className={'center-block'}>
+          <div>
+            <select onChange={e => props.timespan(e)}>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
+          </div>
+          <div>
+            <DateRangePicker
+              startDate={props.startDate}
+              endDate={props.endDate}
+              focusedInput={props.focusedInput}
+              onFocusChange={f => props.onFocusChange(f)}
+              onDatesChange={d => props.onDatesChange(d)}
+              isOutsideRange={d => props.isOutsideRange(d)}
+              initialVisibleMonth={() => props.initialVisibleMonth()}
+            />
+          </div>
+        </div>
         <button
           disabled={props.endDate.isSameOrAfter(tomorrow, 'day')}
           onClick={() => props.next()}
         >&raquo;</button>
-        <div>
-          <DateRangePicker
-            startDate={props.startDate}
-            endDate={props.endDate}
-            focusedInput={props.focusedInput}
-            onFocusChange={f => props.onFocusChange(f)}
-            onDatesChange={d => props.onDatesChange(d)}
-            isOutsideRange={d => props.isOutsideRange(d)}
-            initialVisibleMonth={() => props.initialVisibleMonth()}
-          />
-        </div>
       </div>
     )
   };
