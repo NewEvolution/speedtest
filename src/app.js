@@ -2,30 +2,44 @@
 
 require('../scss/main.scss');
 
-const DateRangePicker = require('react-dates').DateRangePicker;
-const React = require('react');
-const ReactDOM = require('react-dom');
-const moment = require('moment');
-const fetch = require('whatwg-fetch');
-const LineChart = require('react-d3-basic').LineChart;
+const DateRangePicker = require('react-dates').DateRangePicker,
+      LineChart = require('react-d3-basic').LineChart,
+      React = require('react'),
+      ReactDOM = require('react-dom'),
+      moment = require('moment');
+require('whatwg-fetch');
 
 (() => {
-  const endMaker = (date, range) => {
+  const tomorrow = moment().add(1, 'day').endOf('day'),
+        firstScan = moment('2016-04-25').startOf('day'),
+        // Given date and range, provide a new moment 1 range in the future
+        endMaker = (date, range) => {
           return moment(date).add(1, range)
-        },
-        tomorrow = moment().add(1, 'day').endOf('day'),
-        firstScan = moment('2016-04-25').startOf('day');
+        };
 
   class Content extends React.Component{
     constructor() {
       super();
-      const today = moment().startOf('day');
+      const today = moment().startOf('day'),
+            tomorrow = endMaker(today, 'day');
       this.state = {
         startDate: today,
-        endDate: endMaker(today, 'day'),
+        endDate: tomorrow,
         range: 'day',
         focusedInput: null
       };
+    }
+    // Called to get data from the API to update the chart
+    fetchData() {
+      const start = this.state.startDate.format('YYYYMMDD'),
+            end = this.state.endDate.format('YYYYMMDD')
+      fetch(`http://localhost:3000/api/range/${start}/${end}`)
+        .then((res) => res.json())
+        .then((json) => {
+          console.log('json:', json);
+        }).catch((err) => {
+          throw err;
+        })
     }
     // Called to decrement the start and end dates by the current range
     previous() {
@@ -33,6 +47,7 @@ const LineChart = require('react-d3-basic').LineChart;
         startDate: this.state.startDate.subtract(1, this.state.range),
         endDate: endMaker(this.state.startDate, this.state.range)
       });
+      this.fetchData();
     }
     // Called to increment the start and end dates by the current range
     next() {
@@ -40,6 +55,7 @@ const LineChart = require('react-d3-basic').LineChart;
         startDate: this.state.startDate.add(1, this.state.range),
         endDate: endMaker(this.state.startDate, this.state.range)
       });
+      this.fetchData();
     }
     // Called to change the current range (day, week, month, year)
     timespan(e) {
@@ -72,19 +88,21 @@ const LineChart = require('react-d3-basic').LineChart;
     }
     render() {
       return(
-        <Controls
-          startDate={this.state.startDate}
-          endDate={this.state.endDate}
-          range={this.state.range}
-          focusedInput={this.state.focusedInput}
-          timespan={e => this.timespan(e)}
-          previous={() => this.previous()}
-          next={() => this.next()}
-          onFocusChange={f => this.onFocusChange(f)}
-          onDatesChange={d => this.onDatesChange(d)}
-          isOutsideRange={d => this.isOutsideRange(d)}
-          initialVisibleMonth={() => this.initialVisibleMonth()}
-        />
+        <div>
+          <Controls
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            range={this.state.range}
+            focusedInput={this.state.focusedInput}
+            timespan={e => this.timespan(e)}
+            previous={() => this.previous()}
+            next={() => this.next()}
+            onFocusChange={f => this.onFocusChange(f)}
+            onDatesChange={d => this.onDatesChange(d)}
+            isOutsideRange={d => this.isOutsideRange(d)}
+            initialVisibleMonth={() => this.initialVisibleMonth()}
+          />
+        </div>
       )
     }
   };
