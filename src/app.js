@@ -93,6 +93,7 @@ const LineChart = require('react-d3-basic').LineChart;
     return(
       <div>
         <button
+          className={'prev'}
           disabled={props.startDate.isSameOrBefore(firstScan, 'day')}
           onClick={() => props.previous()}
         >&laquo;</button>
@@ -118,6 +119,7 @@ const LineChart = require('react-d3-basic').LineChart;
           </div>
         </div>
         <button
+          className={'next'}
           disabled={props.endDate.isSameOrAfter(tomorrow, 'day')}
           onClick={() => props.next()}
         >&raquo;</button>

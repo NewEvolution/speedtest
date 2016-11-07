@@ -5,4 +5,17 @@ body {
 .center-block {
   display: inline-block;
 }
+
+button {
+  font-size: 3em;
+  border: none;
+}
+
+.prev {
+  border-radius: 25% 0 0 25%;
+}
+
+.next {
+  border-radius: 0 25% 25% 0;
+}
 @import '~react-dates/css/styles.scss';
