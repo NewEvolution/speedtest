@@ -11,23 +11,26 @@ require('whatwg-fetch');
 
 (() => {
   const tomorrow = moment().add(1, 'day').endOf('day'),
-        firstScan = moment('2016-04-25').startOf('day'),
-        // Given date and range, provide a new moment 1 range in the future
-        endMaker = (date, range) => {
-          return moment(date).add(1, range)
-        };
+        firstScan = moment('2016-04-25').startOf('day');
 
   class Content extends React.Component{
     constructor() {
       super();
       const today = moment().startOf('day'),
-            tomorrow = endMaker(today, 'day');
+            tomorrow = moment(today).add(1, 'day');
       this.state = {
         startDate: today,
         endDate: tomorrow,
         range: 'day',
-        focusedInput: null
+        focusedInput: null,
+        chartData:  [{
+          "ping": 16.554,
+          "download": 77.024,
+          "upload": 40.171,
+          "scantime": "2016-05-01T05:00:00.000Z"
+        }]
       };
+      this.fetchData();
     }
     // Called to get data from the API to update the chart
     fetchData() {
@@ -36,7 +39,9 @@ require('whatwg-fetch');
       fetch(`http://localhost:3000/api/range/${start}/${end}`)
         .then((res) => res.json())
         .then((json) => {
-          console.log('json:', json);
+          this.setState({
+            chartData: json
+          });
         }).catch((err) => {
           throw err;
         })
@@ -45,31 +50,29 @@ require('whatwg-fetch');
     previous() {
       this.setState({
         startDate: this.state.startDate.subtract(1, this.state.range),
-        endDate: endMaker(this.state.startDate, this.state.range)
-      });
-      this.fetchData();
+        endDate: this.state.endDate.subtract(1, this.state.range)
+      }, this.fetchData());
     }
     // Called to increment the start and end dates by the current range
     next() {
       this.setState({
         startDate: this.state.startDate.add(1, this.state.range),
-        endDate: endMaker(this.state.startDate, this.state.range)
-      });
-      this.fetchData();
+        endDate: this.state.endDate.subtract(1, this.state.range)
+      }, this.fetchData());
     }
     // Called to change the current range (day, week, month, year)
     timespan(e) {
       this.setState({
         range: e.target.value,
-        endDate: endMaker(this.state.startDate, e.target.value)
-      });
+        endDate: moment(this.state.startDate).add(1, e.target.value)
+      }, this.fetchData());
     }
     // Called by date picker upon changing dates to set dates in state
     onDatesChange(datesObj) {
       this.setState({
         startDate: datesObj.startDate,
-        endDate: datesObj.endDate
-      })
+        endDate: datesObj.endDate.startOf('day')
+      }, this.fetchData())
     }
     // Called by date picker when focus changes to/from inputs
     onFocusChange(focused) {
@@ -87,21 +90,56 @@ require('whatwg-fetch');
       return moment().subtract(1, 'month');
     }
     render() {
+      const margins = {
+              top: 20,
+              right: 50,
+              bottom: 20,
+              left: 50
+            },
+            chartSeries = [
+              {
+                field: 'download',
+                name: 'Download',
+                color: 'red'
+              },
+              {
+                field: 'upload',
+                name: 'Upload',
+                color: 'green'
+              }
+            ],
+            height = 400,
+            width = 1000,
+            x = data => moment(data.scantime).toDate(),
+            xScale = 'time';
       return(
         <div>
-          <Controls
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            range={this.state.range}
-            focusedInput={this.state.focusedInput}
-            timespan={e => this.timespan(e)}
-            previous={() => this.previous()}
-            next={() => this.next()}
-            onFocusChange={f => this.onFocusChange(f)}
-            onDatesChange={d => this.onDatesChange(d)}
-            isOutsideRange={d => this.isOutsideRange(d)}
-            initialVisibleMonth={() => this.initialVisibleMonth()}
-          />
+          <div>
+            <Controls
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              range={this.state.range}
+              focusedInput={this.state.focusedInput}
+              timespan={e => this.timespan(e)}
+              previous={() => this.previous()}
+              next={() => this.next()}
+              onFocusChange={f => this.onFocusChange(f)}
+              onDatesChange={d => this.onDatesChange(d)}
+              isOutsideRange={d => this.isOutsideRange(d)}
+              initialVisibleMonth={() => this.initialVisibleMonth()}
+            />
+          </div>
+          <div>
+            <LineChart
+              margins={margins}
+              data={this.state.chartData}
+              width={width}
+              height={height}
+              chartSeries={chartSeries}
+              x={x}
+              xScale={xScale}
+            />
+          </div>
         </div>
       )
     }
