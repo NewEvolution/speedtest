@@ -2,8 +2,9 @@
 
 require('../scss/main.scss');
 
-const DateRangePicker = require('react-dates').DateRangePicker,
-      LineChart = require('react-d3-basic').LineChart,
+const APIURL = process.env.APIURL || 'localhost:3000',
+      DateRangePicker = require('react-dates').DateRangePicker,
+      LineTooltip = require('react-d3-tooltip').LineTooltip,
       React = require('react'),
       ReactDOM = require('react-dom'),
       moment = require('moment');
@@ -23,20 +24,15 @@ require('whatwg-fetch');
         endDate: tomorrow,
         range: 'day',
         focusedInput: null,
-        chartData:  [{
-          "ping": 16.554,
-          "download": 77.024,
-          "upload": 40.171,
-          "scantime": "2016-05-01T05:00:00.000Z"
-        }]
+        chartData:  [{}]
       };
-      this.fetchData();
+      this.fetchData(today, tomorrow);
     }
     // Called to get data from the API to update the chart
-    fetchData() {
-      const start = this.state.startDate.format('YYYYMMDD'),
-            end = this.state.endDate.format('YYYYMMDD')
-      fetch(`http://localhost:3000/api/range/${start}/${end}`)
+    fetchData(sentStart, sentEnd) {
+      const start = sentStart.format('YYYYMMDD'),
+            end = sentEnd.format('YYYYMMDD');
+      fetch(`http://${APIURL}/api/range/${start}/${end}`)
         .then((res) => res.json())
         .then((json) => {
           this.setState({
@@ -48,31 +44,51 @@ require('whatwg-fetch');
     }
     // Called to decrement the start and end dates by the current range
     previous() {
+      const start = moment(this.state.startDate).subtract(1, this.state.range),
+            end = moment(this.state.startDate);
       this.setState({
-        startDate: this.state.startDate.subtract(1, this.state.range),
-        endDate: this.state.endDate.subtract(1, this.state.range)
-      }, this.fetchData());
+        startDate: start,
+        endDate: end
+      }, this.fetchData(start, end));
     }
     // Called to increment the start and end dates by the current range
     next() {
+      const start = moment(this.state.startDate).add(1, this.state.range),
+            end = moment(this.state.startDate).add(2, this.state.range);
       this.setState({
-        startDate: this.state.startDate.add(1, this.state.range),
-        endDate: this.state.endDate.subtract(1, this.state.range)
-      }, this.fetchData());
+        startDate: start,
+        endDate: end,
+      }, this.fetchData(start, end));
     }
     // Called to change the current range (day, week, month, year)
     timespan(e) {
+      const range = e.target.value,
+            end = moment(this.state.startDate).add(1, range);
       this.setState({
-        range: e.target.value,
-        endDate: moment(this.state.startDate).add(1, e.target.value)
-      }, this.fetchData());
+        range: range,
+        endDate: end
+      }, this.fetchData(this.state.startDate, end));
     }
     // Called by date picker upon changing dates to set dates in state
     onDatesChange(datesObj) {
-      this.setState({
-        startDate: datesObj.startDate,
-        endDate: datesObj.endDate.startOf('day')
-      }, this.fetchData())
+      if (datesObj.startDate) {
+        this.setState({
+          startDate: datesObj.startDate
+        });
+      }
+      if (datesObj.endDate) {
+        this.setState({
+          endDate: datesObj.endDate.startOf('day')
+        });
+      }
+      if (datesObj.startDate && datesObj.endDate) {
+        const start = datesObj.startDate,
+              end = datesObj.endDate.startOf('day');
+        this.setState({
+          startDate: start,
+          endDate: end
+        }, this.fetchData(start, end));
+      }
     }
     // Called by date picker when focus changes to/from inputs
     onFocusChange(focused) {
@@ -99,17 +115,22 @@ require('whatwg-fetch');
             chartSeries = [
               {
                 field: 'download',
-                name: 'Download',
+                name: 'Download (Mbit/s)',
                 color: 'red'
               },
               {
                 field: 'upload',
-                name: 'Upload',
+                name: 'Upload (Mbit/s)',
                 color: 'green'
+              },
+              {
+                field: 'ping',
+                name: 'Ping (ms)',
+                color: 'orange'
               }
             ],
-            height = 400,
-            width = 1000,
+            height = window.innerHeight - 150,
+            width = window.innerWidth - 10,
             x = data => moment(data.scantime).toDate(),
             xScale = 'time';
       return(
@@ -130,7 +151,7 @@ require('whatwg-fetch');
             />
           </div>
           <div>
-            <LineChart
+            <LineTooltip
               margins={margins}
               data={this.state.chartData}
               width={width}
