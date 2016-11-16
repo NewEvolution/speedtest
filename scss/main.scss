@@ -1,21 +1,54 @@
+@import '~react-dates/css/styles.scss';
+
 body {
+  background-color: #C5D3CD;
   font-family: 'Titillium Web', sans-serif;
+}
+
+.control-area {
+  padding-left: 35.3vw;
+  margin-bottom: 0.3em;
+}
+
+.controls {
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  border: 1px solid $react-dates-color-gray-lighter;
+  background-color: white;
+  border-radius: 15px;
 }
 
 .center-block {
   display: inline-block;
 }
 
-button {
-  font-size: 3em;
+.nav-button {
+  &:hover {
+    text-shadow: 1px 1px 2px $react-dates-color-gray-light;
+    cursor: pointer;
+  }
+  &:active {
+    text-shadow: none;
+  }
+  &:focus {
+    outline: none;
+    color: $react-dates-color-primary;
+  }
+  &:disabled {
+    text-shadow: none;
+    color: $react-dates-color-gray-light;
+    cursor: not-allowed;
+  }
   border: none;
+  background: none;
+  font-size: 3em;
+  padding: 0 10px;
+  margin: 0;
 }
 
-.prev {
-  border-radius: 25% 0 0 25%;
+.chart {
+  background-color: white;
+  border: 1px solid $react-dates-color-gray-lighter;
+  border-radius: 5px;
 }
-
-.next {
-  border-radius: 0 25% 25% 0;
-}
-@import '~react-dates/css/styles.scss';
