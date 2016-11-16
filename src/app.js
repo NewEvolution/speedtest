@@ -27,6 +27,14 @@ require('whatwg-fetch');
         chartData:  [{}]
       };
       this.fetchData(today, tomorrow);
+      this.fetchData = this.fetchData.bind(this);
+      this.previous = this.previous.bind(this);
+      this.next = this.next.bind(this);
+      this.timespan = this.timespan.bind(this);
+      this.onDatesChange = this.onDatesChange.bind(this);
+      this.onFocusChange = this.onFocusChange.bind(this);
+      this.isOutsideRange = this.isOutsideRange.bind(this);
+      this.initialVisibleMonth = this.initialVisibleMonth.bind(this);
     }
     // Called to get data from the API to update the chart
     fetchData(sentStart, sentEnd) {
@@ -141,13 +149,13 @@ require('whatwg-fetch');
               endDate={this.state.endDate}
               range={this.state.range}
               focusedInput={this.state.focusedInput}
-              timespan={e => this.timespan(e)}
-              previous={() => this.previous()}
-              next={() => this.next()}
-              onFocusChange={f => this.onFocusChange(f)}
-              onDatesChange={d => this.onDatesChange(d)}
-              isOutsideRange={d => this.isOutsideRange(d)}
-              initialVisibleMonth={() => this.initialVisibleMonth()}
+              timespan={this.timespan}
+              previous={this.previous}
+              next={this.next}
+              onFocusChange={this.onFocusChange}
+              onDatesChange={this.onDatesChange}
+              isOutsideRange={this.isOutsideRange}
+              initialVisibleMonth={this.initialVisibleMonth}
             />
           </div>
           <div>
@@ -166,17 +174,29 @@ require('whatwg-fetch');
     }
   };
 
-  function Controls(props) {
+  const Controls = ({
+    startDate,
+    endDate,
+    range,
+    focusedInput,
+    timespan,
+    previous,
+    next,
+    onFocusChange,
+    onDatesChange,
+    isOutsideRange,
+    initialVisibleMonth
+  }) => {
     return(
       <div>
         <button
           className={'prev'}
-          disabled={props.startDate.isSameOrBefore(firstScan, 'day')}
-          onClick={() => props.previous()}
+          disabled={startDate.isSameOrBefore(firstScan, 'day')}
+          onClick={() => previous()}
         >&laquo;</button>
         <div className={'center-block'}>
           <div>
-            <select onChange={e => props.timespan(e)}>
+            <select onChange={e => timespan(e)}>
               <option value="day">Day</option>
               <option value="week">Week</option>
               <option value="month">Month</option>
@@ -185,20 +205,20 @@ require('whatwg-fetch');
           </div>
           <div>
             <DateRangePicker
-              startDate={props.startDate}
-              endDate={props.endDate}
-              focusedInput={props.focusedInput}
-              onFocusChange={f => props.onFocusChange(f)}
-              onDatesChange={d => props.onDatesChange(d)}
-              isOutsideRange={d => props.isOutsideRange(d)}
-              initialVisibleMonth={() => props.initialVisibleMonth()}
+              startDate={startDate}
+              endDate={endDate}
+              focusedInput={focusedInput}
+              onFocusChange={onFocusChange}
+              onDatesChange={onDatesChange}
+              isOutsideRange={isOutsideRange}
+              initialVisibleMonth={initialVisibleMonth}
             />
           </div>
         </div>
         <button
           className={'next'}
-          disabled={props.endDate.isSameOrAfter(tomorrow, 'day')}
-          onClick={() => props.next()}
+          disabled={endDate.isSameOrAfter(tomorrow, 'day')}
+          onClick={() => next()}
         >&raquo;</button>
       </div>
     )
