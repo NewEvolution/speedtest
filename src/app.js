@@ -186,43 +186,40 @@ require('whatwg-fetch');
     onDatesChange,
     isOutsideRange,
     initialVisibleMonth
-  }) => {
-    return(
-      <div>
-        <button
-          className={'prev'}
-          disabled={startDate.isSameOrBefore(firstScan, 'day')}
-          onClick={() => previous()}
-        >&laquo;</button>
-        <div className={'center-block'}>
-          <div>
-            <select onChange={e => timespan(e)}>
-              <option value="day">Day</option>
-              <option value="week">Week</option>
-              <option value="month">Month</option>
-              <option value="year">Year</option>
-            </select>
-          </div>
-          <div>
-            <DateRangePicker
-              startDate={startDate}
-              endDate={endDate}
-              focusedInput={focusedInput}
-              onFocusChange={onFocusChange}
-              onDatesChange={onDatesChange}
-              isOutsideRange={isOutsideRange}
-              initialVisibleMonth={initialVisibleMonth}
-            />
-          </div>
+  }) =>
+    <div>
+      <button
+        className={'prev'}
+        disabled={startDate.isSameOrBefore(firstScan, 'day')}
+        onClick={() => previous()}
+      >&laquo;</button>
+      <div className={'center-block'}>
+        <div>
+          <select onChange={e => timespan(e)}>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+          </select>
         </div>
-        <button
-          className={'next'}
-          disabled={endDate.isSameOrAfter(tomorrow, 'day')}
-          onClick={() => next()}
-        >&raquo;</button>
+        <div>
+          <DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            focusedInput={focusedInput}
+            onFocusChange={onFocusChange}
+            onDatesChange={onDatesChange}
+            isOutsideRange={isOutsideRange}
+            initialVisibleMonth={initialVisibleMonth}
+          />
+        </div>
       </div>
-    )
-  };
+      <button
+        className={'next'}
+        disabled={endDate.isSameOrAfter(tomorrow, 'day')}
+        onClick={() => next()}
+      >&raquo;</button>
+    </div>;
 
   ReactDOM.render(
     <Content />,
