@@ -1,6 +1,7 @@
 'use strict';
 
 require('../scss/main.scss');
+require('whatwg-fetch');
 
 const APIURL = process.env.APIURL || 'localhost:3000',
       DateRangePicker = require('react-dates').DateRangePicker,
@@ -8,7 +9,6 @@ const APIURL = process.env.APIURL || 'localhost:3000',
       React = require('react'),
       ReactDOM = require('react-dom'),
       moment = require('moment');
-require('whatwg-fetch');
 
 (() => {
   const tomorrow = moment().add(1, 'day').endOf('day'),
@@ -114,6 +114,7 @@ require('whatwg-fetch');
       return moment().subtract(1, 'month');
     }
     render() {
+      // React D3 configuration settings
       const margins = {
               top: 20,
               right: 50,
@@ -122,9 +123,9 @@ require('whatwg-fetch');
             },
             chartSeries = [
               {
-                field: 'download',
-                name: 'Download (Mbit/s)',
-                color: 'red'
+                field: 'ping',
+                name: 'Ping (ms)',
+                color: 'orange'
               },
               {
                 field: 'upload',
@@ -132,9 +133,9 @@ require('whatwg-fetch');
                 color: 'green'
               },
               {
-                field: 'ping',
-                name: 'Ping (ms)',
-                color: 'orange'
+                field: 'download',
+                name: 'Download (Mbit/s)',
+                color: 'red'
               }
             ],
             height = window.innerHeight - 150,
@@ -143,7 +144,7 @@ require('whatwg-fetch');
             xScale = 'time';
       return(
         <div>
-          <div>
+          <div className={'control-area'}>
             <Controls
               startDate={this.state.startDate}
               endDate={this.state.endDate}
@@ -158,7 +159,7 @@ require('whatwg-fetch');
               initialVisibleMonth={this.initialVisibleMonth}
             />
           </div>
-          <div>
+          <div className={'chart'}>
             <LineTooltip
               margins={margins}
               data={this.state.chartData}
@@ -187,9 +188,9 @@ require('whatwg-fetch');
     isOutsideRange,
     initialVisibleMonth
   }) =>
-    <div>
+    <div className={'controls'}>
       <button
-        className={'prev'}
+        className={'nav-button'}
         disabled={startDate.isSameOrBefore(firstScan, 'day')}
         onClick={() => previous()}
       >&laquo;</button>
@@ -215,14 +216,11 @@ require('whatwg-fetch');
         </div>
       </div>
       <button
-        className={'next'}
+        className={'nav-button'}
         disabled={endDate.isSameOrAfter(tomorrow, 'day')}
         onClick={() => next()}
       >&raquo;</button>
     </div>;
 
-  ReactDOM.render(
-    <Content />,
-    document.getElementById('app')
-  );
+  ReactDOM.render(<Content />, document.getElementById('app'));
 })()
