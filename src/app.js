@@ -196,6 +196,7 @@ const APIURL = process.env.APIURL || 'localhost:3000',
       >&laquo;</button>
       <div className={'center-block'}>
         <div>
+          <SpanButton name={'Day'} range={range} timespan={timespan} />
           <select onChange={e => timespan(e)}>
             <option value="day">Day</option>
             <option value="week">Week</option>
@@ -221,6 +222,12 @@ const APIURL = process.env.APIURL || 'localhost:3000',
         onClick={() => next()}
       >&raquo;</button>
     </div>;
+
+  const SpanButton = ({name, range, timespan}) =>
+    <button
+      className={name.toLowerCase() == range ? 'active' : ''}
+      onClick={(s) => timespan(s)}
+    >{name}</button>
 
   ReactDOM.render(<Content />, document.getElementById('app'));
 })()
