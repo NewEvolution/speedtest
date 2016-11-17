@@ -19,12 +19,12 @@ const MONGODB_PASS = process.env.MONGODB_PASS || '';
 const MONGODB_HOST = process.env.MONGODB_HOST || 'localhost';
 const MONGODB_PORT = process.env.MONGODB_PORT || localMongoPort;
 
-const MONGODB_AUTH = MONGODB_USER ? `${MONGODB_USER}:${MONGODB_PASS}@` : '';
+const mongodb_auth = MONGODB_USER ? `${MONGODB_USER}:${MONGODB_PASS}@` : '';
 
-const MONGODB_URL = `mongodb://${MONGODB_AUTH}${MONGODB_HOST}:${MONGODB_PORT}/speedtest`;
+const mongodb_url = `mongodb://${mongodb_auth}${MONGODB_HOST}:${MONGODB_PORT}/speedtest`;
 
 const mongoose = require('mongoose');
-mongoose.connect(MONGODB_URL);
+mongoose.connect(mongodb_url);
 
 const localPort = 3000;
 const PORT = process.env.PORT || localPort;
