@@ -4,6 +4,7 @@ require('../scss/main.scss');
 require('whatwg-fetch');
 
 const APIURL = process.env.APIURL || 'localhost:3000',
+      FIRSTSCAN = process.env.FIRSTSCAN || '2000-01-01',
       DateRangePicker = require('react-dates').DateRangePicker,
       LineTooltip = require('react-d3-tooltip').LineTooltip,
       React = require('react'),
@@ -12,7 +13,7 @@ const APIURL = process.env.APIURL || 'localhost:3000',
 
 (() => {
   const tomorrow = moment().add(1, 'day').endOf('day'),
-        firstScan = moment('2016-04-25').startOf('day');
+        firstScan = moment(FIRSTSCAN).startOf('day');
 
   class Content extends React.Component{
     constructor() {
