@@ -27,8 +27,11 @@ Get requests to `/speedtest` initiate a new speed test via [speedtest-cli](https
 
 ## Usage
 - In the browser of your choice, go to [`http://localhost:3000/speedtest`](http://localhost:3000/speedtest) a few times to populate the database with some speed test results.
-- Navigate to [`http://localhost:3000`](http://localhost:3000/) to view the visualization of the speed test data in the database.
 - For gathering periodic results you could write a simple cron job running `curl` or `wget` to hit `http://localhost:3000/speedtest` hourly.
+- Navigate to [`http://localhost:3000`](http://localhost:3000/) to view the visualization of the speed test data in the database.
+- The top day, week, month & year time span buttons control the span of time displayed in the graph.
+- Left and right navigation buttons jump forward and back in time by the amount selected by the time span buttons.
+- Clicking the displayed dates opens a calendar chooser to select a custom time range for display.
 
 ## Environment Variables
 Several environment variables can be used for additional configuration.
