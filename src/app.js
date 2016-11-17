@@ -138,27 +138,25 @@ const APIURL = process.env.APIURL || 'localhost:3000',
                 color: 'red'
               }
             ],
-            height = window.innerHeight - 150,
+            height = window.innerHeight - 160,
             width = window.innerWidth - 10,
             x = data => moment(data.scantime).toDate(),
             xScale = 'time';
       return(
         <div>
-          <div className={'control-area'}>
-            <Controls
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              range={this.state.range}
-              focusedInput={this.state.focusedInput}
-              timespan={this.timespan}
-              previous={this.previous}
-              next={this.next}
-              onFocusChange={this.onFocusChange}
-              onDatesChange={this.onDatesChange}
-              isOutsideRange={this.isOutsideRange}
-              initialVisibleMonth={this.initialVisibleMonth}
-            />
-          </div>
+          <Controls
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            range={this.state.range}
+            focusedInput={this.state.focusedInput}
+            timespan={this.timespan}
+            previous={this.previous}
+            next={this.next}
+            onFocusChange={this.onFocusChange}
+            onDatesChange={this.onDatesChange}
+            isOutsideRange={this.isOutsideRange}
+            initialVisibleMonth={this.initialVisibleMonth}
+          />
           <div className={'chart'}>
             <LineTooltip
               margins={margins}
@@ -170,6 +168,9 @@ const APIURL = process.env.APIURL || 'localhost:3000',
               xScale={xScale}
             />
           </div>
+          <footer>
+            <span>&copy; Ryan Tanay {moment().format('YYYY')} - <a href={'https://github.com/NewEvolution/speedtest'}>source</a></span>
+          </footer>
         </div>
       )
     }

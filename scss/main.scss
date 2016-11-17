@@ -5,17 +5,12 @@ body {
   font-family: 'Titillium Web', sans-serif;
 }
 
-.control-area {
-  padding-left: 35.3vw;
-  margin-bottom: 0.3em;
-}
-
 .controls {
-  margin: 0;
+  margin: 0 auto 0.3em;
   padding: 0;
-  display: inline-block;
+  width: 420px;
   border: 1px solid $react-dates-color-gray-lighter;
-  background-color: white;
+  background-color: #fff;
   border-radius: 15px;
 }
 
@@ -66,7 +61,7 @@ body {
   }
   &:disabled {
     text-shadow: none;
-    color: $react-dates-color-gray-light;
+    color: $react-dates-color-gray-lighter;
     cursor: default;
   }
   font-size: 3em;
@@ -74,7 +69,24 @@ body {
 }
 
 .chart {
-  background-color: white;
+  background-color: #fff;
   border: 1px solid $react-dates-color-gray-lighter;
   border-radius: 5px;
+}
+
+footer {
+  width: 152px;
+  font-size: 0.8em;
+  margin: 0 auto;
+}
+
+a {
+  color: $react-dates-color-secondary;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:active {
+    color: $react-dates-color-primary;
+  }
 }
