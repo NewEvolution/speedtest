@@ -22,7 +22,7 @@ Get requests to `/speedtest` initiate a new speed test via [speedtest-cli](https
 - Clone down this repository
 - In a terminal within the repository directory:
   - Install required Node modules by running `npm install`
-  - Generate output files by running `webpack`
+  - Generate output files by running `./node_modules/.bin/webpack`
   - Start the server by running `node server.js`
 
 ## Usage
