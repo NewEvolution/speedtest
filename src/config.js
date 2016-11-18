@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  apiurl: 'localhost:3000',
+  apiurl: 'speedtest',
   firstscan: '2016-04-25'
 };
