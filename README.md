@@ -33,12 +33,14 @@ Get requests to `/speedtest` initiate a new speed test via [speedtest-cli](https
 - Left and right navigation buttons jump forward and back in time by the amount selected by the time span buttons.
 - Clicking the displayed dates opens a calendar chooser to select a custom time range for display.
 
-## Environment Variables
+## Configuration
+The file `src/config.js` contains a configuration object for the React front end.
+- **apiurl** - hostname:port for connecting to the API. Default of `localhost:3000`.
+- **firstscan** - `YYYY-MM-DD` formatted date string for the first scan in the database. Default of `2016-04-25`.
+
 Several environment variables can be used for additional configuration.
 - **MONGODB_USER** - Username for connecting to MongoDB. Defaults to empty string.
 - **MONGODB_PASS** - Password for connecting to MongoDB. Defaults to empty string.
 - **MONGODB_HOST** - URL for MongoDB connection. Defaults to `localhost`.
 - **MONGODB_PORT** - Port used for connecting go MongoDB. Defaults to `27017`.
 - **PORT** - Port the Node web server listens on. Defaults to `3000`.
-- **APIURL** - The hostname:port section of the Node web server for making API calls. Defaults to `localhost:3000`.
-- **FIRSTSCAN** - Disables navigation to speed test results prior to the supplied date, format `YYYY-MM-DD`. Defaults to `2000-01-01`.
