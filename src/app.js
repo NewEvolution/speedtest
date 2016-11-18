@@ -169,7 +169,7 @@ const {firstscan, apiurl} = require('./config'),
             />
           </div>
           <footer>
-            <span>&copy; Ryan Tanay {moment().format('YYYY')} - <a href={'https://github.com/NewEvolution/speedtest'}>source</a></span>
+            <span>Ryan Tanay {moment().format('YYYY')} - <a href={'https://github.com/NewEvolution/speedtest'}>source</a></span>
           </footer>
         </div>
       )
