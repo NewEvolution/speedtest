@@ -194,7 +194,7 @@ const {firstscan, apiurl} = require('./config'),
             <SpanButton key={name}
                         name={name}
                         range={range}
-                        rimespan={timespan} />
+                        timespan={timespan} />
           );
     return(
       <div className={'controls'}>
