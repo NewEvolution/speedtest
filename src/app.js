@@ -144,29 +144,25 @@ const {firstscan, apiurl} = require('./config'),
             xScale = 'time';
       return(
         <div>
-          <Controls
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            range={this.state.range}
-            focusedInput={this.state.focusedInput}
-            timespan={this.timespan}
-            previous={this.previous}
-            next={this.next}
-            onFocusChange={this.onFocusChange}
-            onDatesChange={this.onDatesChange}
-            isOutsideRange={this.isOutsideRange}
-            initialVisibleMonth={this.initialVisibleMonth}
-          />
+          <Controls startDate={this.state.startDate}
+                    endDate={this.state.endDate}
+                    range={this.state.range}
+                    focusedInput={this.state.focusedInput}
+                    timespan={this.timespan}
+                    previous={this.previous}
+                    next={this.next}
+                    onFocusChange={this.onFocusChange}
+                    onDatesChange={this.onDatesChange}
+                    isOutsideRange={this.isOutsideRange}
+                    initialVisibleMonth={this.initialVisibleMonth} />
           <div className={'chart'}>
-            <LineTooltip
-              margins={margins}
-              data={this.state.chartData}
-              width={width}
-              height={height}
-              chartSeries={chartSeries}
-              x={x}
-              xScale={xScale}
-            />
+            <LineTooltip margins={margins}
+                         data={this.state.chartData}
+                         width={width}
+                         height={height}
+                         chartSeries={chartSeries}
+                         x={x}
+                         xScale={xScale} />
           </div>
           <footer>
             <span>Ryan Tanay {moment().format('YYYY')} - <a href={'https://github.com/NewEvolution/speedtest'}>source</a></span>
@@ -198,32 +194,26 @@ const {firstscan, apiurl} = require('./config'),
           );
     return(
       <div className={'controls'}>
-        <button
-          className={'nav-button'}
-          disabled={startDate.isSameOrBefore(firstScan, 'day')}
-          onClick={() => previous()}
-        >&laquo;</button>
+        <button className={'nav-button'}
+                disabled={startDate.isSameOrBefore(firstScan, 'day')}
+                onClick={() => previous()}>&laquo;</button>
         <div className={'center-block'}>
           <div>
             {spanButtons}
           </div>
           <div>
-            <DateRangePicker
-              startDate={startDate}
-              endDate={endDate}
-              focusedInput={focusedInput}
-              onFocusChange={onFocusChange}
-              onDatesChange={onDatesChange}
-              isOutsideRange={isOutsideRange}
-              initialVisibleMonth={initialVisibleMonth}
-            />
+            <DateRangePicker startDate={startDate}
+                             endDate={endDate}
+                             focusedInput={focusedInput}
+                             onFocusChange={onFocusChange}
+                             onDatesChange={onDatesChange}
+                             isOutsideRange={isOutsideRange}
+                             initialVisibleMonth={initialVisibleMonth} />
           </div>
         </div>
-        <button
-          className={'nav-button'}
-          disabled={endDate.isSameOrAfter(tomorrow, 'day')}
-          onClick={() => next()}
-        >&raquo;</button>
+        <button className={'nav-button'}
+                disabled={endDate.isSameOrAfter(tomorrow, 'day')}
+                onClick={() => next()}>&raquo;</button>
       </div>
     )
   }
@@ -231,12 +221,10 @@ const {firstscan, apiurl} = require('./config'),
   const SpanButton = ({name, range, timespan}) => {
     const active = name.toLowerCase() == range;
     return(
-      <button
-        className={`range-button ${active ? 'active' : ''}`}
-        disabled={active}
-        onClick={e => timespan(e)}
-        value={name.toLowerCase()}
-      >{name}</button>
+      <button className={`range-button ${active ? 'active' : ''}`}
+              disabled={active}
+              onClick={e => timespan(e)}
+              value={name.toLowerCase()}>{name}</button>
     )
   }
 
