@@ -10,7 +10,7 @@ const HtmlPlugin = require('html-webpack-plugin'),
 module.exports = {
   entry: [
     'whatwg-fetch',
-    './src/app.js'
+    './src/app.jsx'
   ],
   module: {
     loaders: [
@@ -20,7 +20,7 @@ module.exports = {
         include: `${__dirname}/scss`
       },
       {
-        test: /\.js$/,
+        test: /\.jsx$/,
         loader: 'babel-loader',
         include: `${__dirname}/src`
       }

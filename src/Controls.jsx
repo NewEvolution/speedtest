@@ -2,7 +2,7 @@
 
 const React = require('react'),
       DateRangePicker = require('react-dates').DateRangePicker,
-      SpanButton = require('./SpanButton');
+      SpanButton = require('./SpanButton.jsx');
 
 module.exports = ({
   firstScan,
