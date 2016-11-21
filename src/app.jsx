@@ -11,7 +11,7 @@
 
         // Imported components
         LineTooltip = require('react-d3-tooltip').LineTooltip,
-        Controls = require('./Controls'),
+        Controls = require('./Controls.jsx'),
 
         // Internal variables
         {firstscan, apiurl} = require('./config'),
