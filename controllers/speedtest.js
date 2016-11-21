@@ -26,6 +26,7 @@ module.exports.new = (req, res) => {
     const parsedData = rawData.map(item => regex.exec(item)[1]);
 
     const obj = new Speedtest({
+      scantime: moment(),
       ping: parsedData[0],
       download: parsedData[1],
       upload: parsedData[2]
