@@ -1,17 +1,21 @@
 'use strict';
 
-require('../scss/main.scss');
-require('whatwg-fetch');
-
-const {firstscan, apiurl} = require('./config'),
-      DateRangePicker = require('react-dates').DateRangePicker,
-      LineTooltip = require('react-d3-tooltip').LineTooltip,
-      React = require('react'),
-      ReactDOM = require('react-dom'),
-      moment = require('moment');
-
 (() => {
-  const tomorrow = moment().add(1, 'day').endOf('day'),
+  require('../scss/main.scss');
+  require('whatwg-fetch');
+
+        // Imported modules
+  const React = require('react'),
+        ReactDOM = require('react-dom'),
+        moment = require('moment'),
+
+        // Imported components
+        LineTooltip = require('react-d3-tooltip').LineTooltip,
+        Controls = require('./Controls'),
+
+        // Internal variables
+        {firstscan, apiurl} = require('./config'),
+        tomorrow = moment().add(1, 'day').endOf('day'),
         firstScan = moment(firstscan).startOf('day');
 
   class Content extends React.Component{
@@ -144,7 +148,9 @@ const {firstscan, apiurl} = require('./config'),
             xScale = 'time';
       return(
         <div>
-          <Controls startDate={this.state.startDate}
+          <Controls firstScan={firstScan}
+                    tomorrow={tomorrow}
+                    startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     range={this.state.range}
                     focusedInput={this.state.focusedInput}
@@ -171,62 +177,6 @@ const {firstscan, apiurl} = require('./config'),
       )
     }
   };
-
-  const Controls = ({
-    startDate,
-    endDate,
-    range,
-    focusedInput,
-    timespan,
-    previous,
-    next,
-    onFocusChange,
-    onDatesChange,
-    isOutsideRange,
-    initialVisibleMonth
-  }) => {
-    const spans = ['Day', 'Week', 'Month', 'Year'],
-          spanButtons = spans.map(name =>
-            <SpanButton key={name}
-                        name={name}
-                        range={range}
-                        timespan={timespan} />
-          );
-    return(
-      <div className={'controls'}>
-        <button className={'nav-button'}
-                disabled={startDate.isSameOrBefore(firstScan, 'day')}
-                onClick={() => previous()}>&laquo;</button>
-        <div className={'center-block'}>
-          <div>
-            {spanButtons}
-          </div>
-          <div>
-            <DateRangePicker startDate={startDate}
-                             endDate={endDate}
-                             focusedInput={focusedInput}
-                             onFocusChange={onFocusChange}
-                             onDatesChange={onDatesChange}
-                             isOutsideRange={isOutsideRange}
-                             initialVisibleMonth={initialVisibleMonth} />
-          </div>
-        </div>
-        <button className={'nav-button'}
-                disabled={endDate.isSameOrAfter(tomorrow, 'day')}
-                onClick={() => next()}>&raquo;</button>
-      </div>
-    )
-  }
-
-  const SpanButton = ({name, range, timespan}) => {
-    const active = name.toLowerCase() == range;
-    return(
-      <button className={`range-button ${active ? 'active' : ''}`}
-              disabled={active}
-              onClick={e => timespan(e)}
-              value={name.toLowerCase()}>{name}</button>
-    )
-  }
 
   ReactDOM.render(<Content />, document.getElementById('app'));
 })()
