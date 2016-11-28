@@ -7,6 +7,7 @@ const moment = require('moment');
 const getResults = (startDate, endDate) => {
   return Speedtest
     .find({scantime: {$gte: startDate, $lt: endDate}})
+    .sort({scantime: -1})
     .exec((err, results) => {
       if (err) throw err;
       return results;
