@@ -1,2 +1,5 @@
 public/*
 !public/images/
+logs/
+db/
+node_modules/
