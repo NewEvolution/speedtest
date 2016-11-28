@@ -142,7 +142,7 @@
                 color: 'red'
               }
             ],
-            height = window.innerHeight - 160,
+            height = window.innerHeight - 170,
             width = window.innerWidth - 35,
             x = data => moment(data.scantime).toDate(),
             xScale = 'time';
