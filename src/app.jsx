@@ -143,7 +143,7 @@
               }
             ],
             height = window.innerHeight - 160,
-            width = window.innerWidth - 10,
+            width = window.innerWidth - 35,
             x = data => moment(data.scantime).toDate(),
             xScale = 'time';
       return(
