@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  apiurl: 'speedtest',
-  firstscan: '2016-04-25'
+  apiurl: 'xn--mkh.ws',
+  firstscan: '2016-12-01'
 };
