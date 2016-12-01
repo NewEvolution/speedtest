@@ -1,6 +1,6 @@
 'use strict';
 
 module.exports = {
-  apiurl: 'xn--mkh.ws',
+  apiurl: 'localhost:62132',
   firstscan: '2016-12-01'
 };
