@@ -1,12 +1,12 @@
 'use strict'
 
-const express = require('express');
-const router = express.Router();
+const express = require('express'),
+      router = express.Router(),
 
-const apiRoutes = require('./api');
+      apiRoutes = require('./api'),
+      speedRoutes = require('./speedtest');
+
 router.use('/api', apiRoutes);
-
-const speedRoutes = require('./speedtest');
 router.use('/speedtest', speedRoutes);
 
 module.exports = router;

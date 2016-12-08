@@ -1,9 +1,9 @@
 'use strict'
 
-const express = require('express');
-const router = express.Router();
+const express = require('express'),
+      router = express.Router(),
+      api = require('../controllers/api');
 
-const api = require('../controllers/api');
 router.get('/day/:date', api.day)
       .get('/week/:date', api.week)
       .get('/month/:date', api.month)
